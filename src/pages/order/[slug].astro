@@ -1,0 +1,222 @@
+---
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import Form_2 from "../../components/Form_2.astro";
+import Knap from "../../components/Knap.astro";
+import "../../styles/style.css";
+
+export async function getStaticPaths() {
+    const url = "https://fttrpxvnwfswdwvtcifh.supabase.co/rest/v1/stock";
+
+    const options = {
+        headers: {
+            apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dHJweHZud2Zzd2R3dnRjaWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODQzOTgwMzcsImV4cCI6MTk5OTk3NDAzN30.jiQY1R9_4xH6PJgdeCvhKQKRA6bfCLB2ciJOBVzotc4",
+        },
+    };
+
+    const respons = await fetch(url, options);
+    const data = await respons.json();
+
+    return data.map((item) => ({
+        params: { slug: item.slug },
+        props: { item },
+    }));
+}
+
+const { item } = Astro.props;
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/svg/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+        <meta name="generator" content={Astro.generator} />
+        <meta name="description" content="Side hvor man kan se at man har gennemført sin ordre" />
+        <title>Cehofski - Order complete</title>
+    </head>
+
+    <body>
+        <Header />
+        <main>
+            <h1>Order</h1>
+            <p>
+                Please note, that your order is only seen as a reservation. <br /> When you've completed the form, you have reserved the item, and we will reach out to you after that, to sort out payment
+                and shipping or collecting. <br /> Note that your reservation lasts 14 days, if the purchase is not completed within those 14 days, others will be able to buy the item
+            </p>
+            <div class="container">
+                <section>
+                    <div class="item">
+                        <div class="item_info">
+                            <div class="img_container">
+                                <img src={"../img/" + item.img2 + ".webp"} alt="" />
+                            </div>
+
+                            <div class="info">
+                                {/* Betinget rendering baseret på værdien af second_name */}
+                                {item.second_name ? <h3>{item.name + " " + item.second_name}</h3> : <h3>{item.name}</h3>}
+                                <div class="size">
+                                    <p class="header">Size</p>
+                                    <p>{item.size}</p>
+                                </div>
+
+                                {
+                                    item.materiale && (
+                                        <div class="text">
+                                            <p class="header">Materials</p>
+                                            <p>{item.materiale}</p>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    item.sten && (
+                                        <div class="text">
+                                            <p class="header">Stone</p>
+                                            <p>{item.sten}</p>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    item.text && (
+                                        <div class="text">
+                                            <p class="header">Description</p>
+                                            <p>{item.text}</p>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+
+                        <div class="price">
+                            <h3>{item.price + " DKK"}</h3>
+                        </div>
+                    </div>
+                    <div>
+                        <Form_2 />
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <Footer />
+    </body>
+    <style>
+        main {
+            min-height: 80vh;
+            margin: 1rem;
+            align-items: center;
+
+            overflow: hidden;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid var(--black);
+        }
+        main p {
+            max-width: 70ch;
+        }
+        .img_container {
+            height: 100%;
+            width: 300px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            border-right: 1px solid var(--black);
+        }
+        img {
+            width: 100%;
+            object-fit: cover;
+            align-self: stretch;
+            max-height: 500px;
+        }
+        section {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
+
+        .item_info {
+            display: flex;
+        }
+
+        h3 {
+            margin-bottom: -0.5rem;
+            color: var(--black);
+        }
+        h2 {
+            line-height: 1;
+        }
+        .info {
+            margin-left: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .info p {
+            padding-right: 3rem;
+            max-width: 35ch;
+        }
+        .text {
+            justify-content: space-between;
+            padding: 0.4rem 0rem 0.4rem 0rem;
+            width: 100%;
+        }
+        .header {
+            font-weight: 900;
+            font-size: 1rem;
+        }
+
+        .size {
+            justify-content: space-between;
+            padding: 0.4rem 0rem 0.4rem 0rem;
+            width: 100%;
+        }
+        .price {
+            align-self: end;
+            text-align: right;
+            border-bottom: 1px solid var(--black);
+            padding-bottom: 0.1rem;
+            margin-bottom: 1rem;
+            margin-right: 1rem;
+            margin-left: 1rem;
+        }
+        h1 {
+            line-height: 8rem;
+            margin-bottom: -1rem;
+        }
+    </style>
+</html>
+
+<script>
+    const url = "https://fttrpxvnwfswdwvtcifh.supabase.co/rest/v1/stock";
+    const key =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dHJweHZud2Zzd2R3dnRjaWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODQzOTgwMzcsImV4cCI6MTk5OTk3NDAzN30.jiQY1R9_4xH6PJgdeCvhKQKRA6bfCLB2ciJOBVzotc4";
+
+    const form = document.querySelector("form");
+    form.addEventListener("submit", sendForm);
+
+    function sendForm(event) {
+        event.preventDefault();
+        const formData = form.elements;
+        let name = formData.name.value;
+        let email = formData.email.value;
+        let text = formData.text.value;
+
+        console.log(formData);
+        fetch(url, {
+            method: "POST",
+            headers: {
+                apikey: key,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, text }),
+        });
+
+        form.reset();
+    }
+</script>

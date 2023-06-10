@@ -28,7 +28,7 @@ import Knap from "./Knap.astro";
           <option value="52">52</option>
         </select>
         <input class="all" type="text" name="overskrift" placeholder="Headline*" />
-        <input class="all text" type="text" name="text" placeholder="Text*" />
+        <textarea class="all text" name="text" placeholder="Text*"></textarea>
 
         <button type="submit"> <Knap type="phone" color="blue" text="Send" link="/ordered" /></button>
       </form>
@@ -70,6 +70,18 @@ import Knap from "./Knap.astro";
         color: var(--black);
         font-family: "Montserrat", sans-serif;
         font-size: 1rem;
+      }
+      textarea {
+        color: var(--secondarycolor);
+        font-weight: 100;
+        font-size: 1rem;
+        background: transparent;
+        border: 1px solid var(--primarycolor);
+        padding: 0.5rem 1rem 0.5rem 1rem;
+        color: var(--black);
+        font-family: "Montserrat", sans-serif;
+        font-size: 1rem;
+        resize: none;
       }
 
       select {

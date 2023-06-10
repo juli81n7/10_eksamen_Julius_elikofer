@@ -242,8 +242,9 @@ const { item } = Astro.props;
               )
             }
           </div>
+          
           <div class="shop">
-            <Knap color="blue" text="shop" link="/ordered" />
+            <Knap color="blue" text="shop" link={"/order/" + item.slug} />
             <a href="#form">
               <p class="custom">Or get your own custom piece</p>
             </a>
@@ -309,7 +310,7 @@ const { item } = Astro.props;
        
       </div>
       <div class="shop">
-        <Knap color="blue" text="shop" link="/ordered" type="phone" />
+        <Knap color="blue" text="shop" link={"/order/" + item.slug} type="phone" />
 
       </div>
       </section>
