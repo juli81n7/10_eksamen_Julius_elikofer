@@ -46,7 +46,14 @@ const { item } = Astro.props;
   <body>
     <Header />
 
-    <main>
+    <main class={item.reserved}>
+      {
+        item.reserved && (
+           <div class="reserved">
+             <h3>This item has already been reserved</h3>
+           </div>
+         )
+       }
       <div class="header">
       
         <p class="breadcrums">
@@ -61,7 +68,6 @@ const { item } = Astro.props;
             {item.second_name ? <span>{item.name + " " + item.second_name}</span> : <span>{item.name}</span>}
 
         </p>
-
 
         <img src={"../../img/" + item.img1 + ".webp"} alt={item.name + " " + item.type} />
         <h1>
@@ -244,12 +250,15 @@ const { item } = Astro.props;
           </div>
           
           <div class="shop">
-            <Knap color="blue" text="shop" link={"/order/" + item.slug} />
+            <Knap color={"blue " + item.reserved} text="shop" link={"/order/" + item.slug} />
             <a href="#form">
               <p class="custom">Or get your own custom piece</p>
             </a>
+            
           </div>
+          
         </div>
+        
       </section>
 
 
@@ -310,7 +319,7 @@ const { item } = Astro.props;
        
       </div>
       <div class="shop">
-        <Knap color="blue" text="shop" link={"/order/" + item.slug} type="phone" />
+        <Knap color={"blue " + item.reserved} text="shop" link={"/order/" + item.slug} type="phone" />
 
       </div>
       </section>
@@ -582,7 +591,52 @@ cursor: pointer;
   .phone{
     display: none;
   }
+
+
+
+.reserved{
+  position:fixed;
+  background-color: var(--black);
+  left: 0%;
+  bottom: 3rem;
+
+display: flex;
+justify-content: center;
+  opacity: 100%;
+z-index: 10;
+padding: 2rem 1.9rem 2rem 2rem;
+
+}
+
+    .reserved h3 {
+      
+      color: var(--secondarycolor);
+      line-height: 2rem;
+    }
+
+
   @media (max-width: 800px) {
+    .reserved{
+  position:fixed;
+  background-color: var(--black);
+  left: 0%;
+  bottom: 0;
+
+display: flex;
+justify-content: center;
+  opacity: 100%;
+z-index: 10;
+padding: 2rem 1.9rem 2rem 2rem;
+
+}
+
+    .reserved h3 {
+      font-size: 1.8rem;
+      color: var(--secondarycolor);
+      line-height: 2rem;
+      text-align: center;
+    }
+
     .computer{
       display: none;
     }
@@ -635,4 +689,8 @@ margin-right: 1rem;
 
 
   }
+
+
+
+
 </style>

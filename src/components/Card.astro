@@ -1,10 +1,18 @@
 ---
 import Knap from "../components/Knap.astro";
-const { name, info, img1, img2, img3, img4, price, type, id, materials, sten, second_name } = Astro.props;
+const { name, info, img1, img2, img3, img4, price, type, id, materials, sten, second_name, reserved } = Astro.props;
 ---
 
-<div class="img_container">
+<div class={"img_container " + reserved}>
+  {
+    reserved && (
+      <div class="reserved">
+        <h3>Reserved</h3>
+      </div>
+    )
+  }
   <img src={"/img/desktop_img/" + img1} alt="Produktbillede af ring" />
+
   <div class="layout">
     <div>
       {/* Betinget rendering baseret på værdien af second_name */}
@@ -13,70 +21,94 @@ const { name, info, img1, img2, img3, img4, price, type, id, materials, sten, se
       <p>{info}</p>
     </div>
     <div class="knap">
-      <Knap color="blue" text="shop" link={id} />
+      <Knap color="blue" text="View" link={id} />
     </div>
   </div>
-</div>
-<style>
-  .cardh2 {
-    color: var(--black);
-    margin-top: 1rem;
-  }
-  a {
-    text-decoration: none;
-  }
 
-  .img_container {
-    overflow: hidden;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 3rem;
-  }
-  h3 {
-    /* margin-top: 0.5rem; */
-  }
-  p {
-    /* margin-bottom: 2rem; */
-  }
-  img {
-    width: 100%;
-    object-fit: cover;
-    align-self: stretch;
-    max-height: 500px;
-  }
-  .layout {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .knap {
-    margin-block: 2rem;
-    margin-right: 0rem;
-  }
-  p {
-    margin-top: -0.5rem;
-  }
-  @media (max-width: 800px) {
-    .img_container {
-      width: 350px;
-      margin-bottom: 3rem;
-    }
-    img {
-      height: 450px;
-      max-height: 700px;
-      min-height: 0;
-    }
-    .layout p {
-      display: none;
-    }
-    .layout {
-      align-items: center;
-    }
+  <style>
     .cardh2 {
       color: var(--black);
-      margin-top: 0rem;
+      margin-top: 1rem;
     }
-  }
-</style>
+    a {
+      text-decoration: none;
+    }
+
+    .img_container {
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    h3 {
+      /* margin-top: 0.5rem; */
+    }
+    p {
+      /* margin-bottom: 2rem; */
+    }
+    img {
+      width: 100%;
+      object-fit: cover;
+      align-self: stretch;
+      max-height: 500px;
+    }
+    .layout {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .knap {
+      margin-block: 2rem;
+      margin-right: 0rem;
+    }
+    p {
+      margin-top: -0.5rem;
+    }
+
+    .true.img_container img {
+      opacity: 50%;
+      background-color: var(--black);
+      z-index: 1;
+    }
+
+    .reserved {
+      position: absolute;
+      opacity: 100% !important;
+      top: 0rem;
+      transform-origin: right;
+      right: 1rem;
+      z-index: 10;
+      background-color: var(--black);
+    }
+    .reserved h3 {
+      padding: 1rem 1.9rem 0.8rem 2rem;
+      color: var(--secondarycolor);
+      line-height: 2rem;
+    }
+
+    @media (max-width: 800px) {
+      .img_container {
+        width: 350px;
+        margin-bottom: 3rem;
+      }
+      img {
+        height: 450px;
+        max-height: 700px;
+        min-height: 0;
+      }
+      .layout p {
+        display: none;
+      }
+      .layout {
+        align-items: center;
+      }
+      .cardh2 {
+        color: var(--black);
+        margin-top: 0rem;
+      }
+    }
+  </style>
+</div>

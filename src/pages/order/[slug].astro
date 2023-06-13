@@ -42,19 +42,15 @@ const { item } = Astro.props;
     <body>
         <Header />
         <main>
-            <h1>Order</h1>
-            <p>
-                Please note, that your order is only seen as a reservation. <br /> When you've completed the form, you have reserved the item, and we will reach out to you after that, to sort out payment
-                and shipping or collecting. <br /> Note that your reservation lasts 14 days, if the purchase is not completed within those 14 days, others will be able to buy the item
-            </p>
             <div class="container">
                 <section>
                     <div class="item">
-                        <div class="item_info">
+
                             <div class="img_container">
                                 <img src={"../img/" + item.img2 + ".webp"} alt="" />
-                            </div>
 
+                        </div>
+                        <div class="main_info">
                             <div class="info">
                                 {/* Betinget rendering baseret på værdien af second_name */}
                                 {item.second_name ? <h3>{item.name + " " + item.second_name}</h3> : <h3>{item.name}</h3>}
@@ -88,13 +84,18 @@ const { item } = Astro.props;
                                     )
                                 }
                             </div>
-                        </div>
-
-                        <div class="price">
-                            <h3>{item.price + " DKK"}</h3>
+                            <div class="price">
+                                <h3>{item.price + " DKK"}</h3>
+                            </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="order">
+                        <h1>Order</h1>
+                        <p>
+                            Please note, that your order is only seen as a reservation. <br /> When you've completed the form, you have reserved the item, and we will reach out to you after that, to sort
+                            out payment and shipping or collecting. <br /> Note that your reservation lasts 14 days, if the purchase is not completed within those 14 days, others will be able to buy the
+                            item
+                        </p>
                         <Form_2 slug={item.slug} />
                     </div>
                 </section>
@@ -105,45 +106,55 @@ const { item } = Astro.props;
     </body>
     <style>
         main {
-            min-height: 80vh;
-            margin: 1rem;
             align-items: center;
-
             overflow: hidden;
         }
 
         .item {
-            display: flex;
-            justify-content: space-between;
             border: 1px solid var(--black);
+            display:grid;
+max-height:800px;
+            width:100%
+     
         }
         main p {
             max-width: 70ch;
         }
         .img_container {
-            height: 100%;
-            width: 300px;
+            height:100%;
+            width:100%;
+
             overflow: hidden;
             display: flex;
             justify-content: center;
-            border-right: 1px solid var(--black);
+
+            border-bottom: 1px solid var(--black);
         }
         img {
-            width: 100%;
+
             object-fit: cover;
             align-self: stretch;
-            max-height: 500px;
+            max-height: 1000px;
+            width:100%;
         }
         section {
             margin-top: 1rem;
-            display: grid;
-            grid-template-rows: auto 1fr;
-        }
-
-        .item_info {
             display: flex;
+            justify-content: center;
+            align-items:center
+            height: 100%;
+        }
+        .order {
+            padding: 3rem;
+            border: 1px solid var(--black);
+            border-left:none;
         }
 
+        .main_info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
         h3 {
             margin-bottom: -0.5rem;
             color: var(--black);
