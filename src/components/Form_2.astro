@@ -1,6 +1,4 @@
 ---
-import Ordered from "../pages/ordered.astro";
-import Knap from "./Knap.astro";
 const { slug } = Astro.props;
 ---
 
@@ -15,7 +13,7 @@ const { slug } = Astro.props;
       <span>
         <button type="submit"> Reserve</button>
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" is:inline></script>
-        <lottie-player class="active" id="mylottie" src="../animations/loader.json" speed={1}></lottie-player>
+        <lottie-player class="active" id="mylottie" src="../../animations/loader.json" speed={1}></lottie-player>
       </span>
     </form>
   </div>
