@@ -4,7 +4,7 @@ const { slug } = Astro.props;
 
 <div>
   <div class="form">
-    <form name="reserve">
+    <form name="reserve" id="my-form" action="https://formspree.io/f/xlekvbzw" method="POST">
       <input type="hidden" name="slug" value={slug} />
       <input class="two" type="text" name="name" required placeholder="Full name*" />
       <input class="two" type="email" name="email" required placeholder="yourmail@gmail.com*" />
@@ -216,52 +216,75 @@ const { slug } = Astro.props;
     const key =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dHJweHZud2Zzd2R3dnRjaWZoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4NDM5ODAzNywiZXhwIjoxOTk5OTc0MDM3fQ.cPfl-eeiPXtkNhII4F8D2CQ3e7QcAfZLStGrJJl1zSM";
     const supabase = createClient("https://fttrpxvnwfswdwvtcifh.supabase.co", key);
-
-    const form = document.querySelector("form");
-    form.addEventListener("submit", sendForm);
     const lottie = document.getElementById("mylottie");
-    function sendForm(event) {
-      event.preventDefault();
 
-      // Henter formdata fra HTML-formularen
+    var form = document.getElementById("my-form");
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
       const formData = form.elements;
+
       let name = formData.name.value;
       let mail = formData.email.value;
       let text = formData.text.value;
       let slug = form.slug.value;
 
-      // Indsætter indsendte data i 'orders' tabel i Supabase
-      supabase
-        .from("orders")
-        .insert({ name: name, mail: mail, text: text, slug: slug })
-        .then(({ error }) => {
-          if (error) {
-            // Kaster en fejl, hvis der opstår en fejl under indsættelsen af data
-            throw new Error(`Kunne ikke indsætte data i 'orders' tabel. Fejl: ${error.message}`);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("success");
+
+            // Indsætter indsendte data i 'orders' tabel i Supabase
+            supabase
+              .from("orders")
+              .insert({ name: name, mail: mail, text: text, slug: slug })
+              .then(({ error }) => {
+                if (error) {
+                  // Kaster en fejl, hvis der opstår en fejl under indsættelsen af data
+                  throw new Error(`Kunne ikke indsætte data i 'orders' tabel. Fejl: ${error.message}`);
+                }
+
+                // Opdaterer 'reserved' attributten til 'TRUE' i 'stock' tabel i Supabase baseret på slug
+                return supabase.from("stock").update({ reserved: "TRUE" }).eq("slug", slug);
+              })
+              .then(({ data, error }) => {
+                if (error) {
+                  // Kaster en fejl, hvis der opstår en fejl under opdatering af data
+                  throw new Error(`Kunne ikke opdatere data i 'stock' tabel. Fejl: ${error.message}`);
+                }
+
+                console.log("Data blev opdateret succesfuldt i 'stock' tabel:", data);
+                lottie.classList.add("active");
+                lottie.play();
+
+                setTimeout(function () {
+                  form.reset();
+                  location.href = "/reservation/" + slug;
+                }, 2500);
+              })
+              .catch((error) => {
+                // Håndterer eventuelle fejl og udskriver fejlbeskeden
+                console.error("Fejl:", error);
+              });
+          } else {
+            response.json().then((data) => {
+              if (Object.hasOwn(data, "errors")) {
+                console.log("error");
+              } else {
+                console.log("error");
+              }
+            });
           }
-
-          // Opdaterer 'reserved' attributten til 'TRUE' i 'stock' tabel i Supabase baseret på slug
-          return supabase.from("stock").update({ reserved: "TRUE" }).eq("slug", slug);
         })
-        .then(({ data, error }) => {
-          if (error) {
-            // Kaster en fejl, hvis der opstår en fejl under opdatering af data
-            throw new Error(`Kunne ikke opdatere data i 'stock' tabel. Fejl: ${error.message}`);
-          }
-
-          console.log("Data blev opdateret succesfuldt i 'stock' tabel:", data);
-          lottie.classList.add("active");
-          lottie.play();
-
-          setTimeout(function () {
-            form.reset();
-            location.href = "/reservation/" + slug;
-          }, 2500);
-        })
-        .catch((error) => {
-          // Håndterer eventuelle fejl og udskriver fejlbeskeden
-          console.error("Fejl:", error);
-        });
+        .catch((error) => {});
     }
+    form.addEventListener("submit", handleSubmit);
   </script>
 </div>
