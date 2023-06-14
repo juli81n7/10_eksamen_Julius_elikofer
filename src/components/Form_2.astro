@@ -221,6 +221,8 @@ const { slug } = Astro.props;
   </style>
 
   <script>
+    // importere supabase Create client, fra supabase client javascript for at gøre det nemmere at interagere med flere Tabeller i samme funktion.
+
     import { createClient } from "@supabase/supabase-js";
 
     // Opretter en klient til Supabase med den angivne nøgle og URL
@@ -229,8 +231,7 @@ const { slug } = Astro.props;
     const supabase = createClient("https://fttrpxvnwfswdwvtcifh.supabase.co", key);
     const lottie = document.getElementById("mylottie");
     const lottie_fail = document.getElementById("mylottie");
-
-    var form = document.getElementById("my-form");
+    const form = document.getElementById("my-form");
 
     async function handleSubmit(event) {
       event.preventDefault();
@@ -257,19 +258,24 @@ const { slug } = Astro.props;
             supabase
               .from("orders")
               .insert({ name: name, mail: mail, text: text, slug: slug })
+
+              // Tjekker om der er en fejl, og hvis der er en fejl, skriver den fejl og fejlbesked i consol.log og starter lottie_2 playeren der er en fejlaimation der skal hjælpe brugeren med at forstå hvad der sker.
               .then(({ error }) => {
                 if (error) {
-                  // Kaster en fejl, hvis der opstår en fejl under indsættelsen af data
-                  throw new Error(`Kunne ikke indsætte data i 'orders' tabel. Fejl: ${error.message}`);
+                  console.log("Fejl:", error);
+                  lottie_2.classList.add("active");
+                  lottie_2.play();
                 }
 
-                // Opdaterer 'reserved' attributten til 'TRUE' i 'stock' tabel i Supabase baseret på slug
+                // Opdaterer 'reserved' attributten til 'TRUE' i 'stock' tabel i Supabase baseret på slug identifikation
                 return supabase.from("stock").update({ reserved: "TRUE" }).eq("slug", slug);
               })
+
               .then(({ data, error }) => {
                 if (error) {
-                  // Kaster en fejl, hvis der opstår en fejl under opdatering af data
-                  throw new Error(`Kunne ikke opdatere data i 'stock' tabel. Fejl: ${error.message}`);
+                  console.log("Fejl:", error);
+                  lottie_2.classList.add("active");
+                  lottie_2.play();
                 }
 
                 console.log("Data blev opdateret succesfuldt i 'stock' tabel:", data);
@@ -294,14 +300,15 @@ const { slug } = Astro.props;
                 lottie_2.classList.add("active");
                 lottie_2.play();
               } else {
-                console.log("error");
-                lottie_2.classList.add("active");
-                lottie_2.play();
               }
             });
           }
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log("error");
+          lottie_2.classList.add("active");
+          lottie_2.play();
+        });
     }
     form.addEventListener("submit", handleSubmit);
   </script>
