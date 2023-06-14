@@ -4,7 +4,7 @@ const { slug } = Astro.props;
 
 <div>
   <div class="form">
-    <form name="reserve" id="my-form" action="https://formspree.io/f/xlekvbzw" method="POST">
+    <form name="reserve" id="my-form" action="https://formspree.io/f/xlekqjlp" method="POST">
       <input type="hidden" name="slug" value={slug} />
       <input class="two" type="text" name="name" required placeholder="Full name*" />
       <input class="two" type="email" name="email" required placeholder="yourmail@gmail.com*" />
@@ -13,7 +13,8 @@ const { slug } = Astro.props;
       <span>
         <button type="submit"> Reserve</button>
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" is:inline></script>
-        <lottie-player class="active" id="mylottie" src="../../animations/loader.json" speed={1}></lottie-player>
+        <lottie-player id="mylottie" src="../../animations/loader.json" speed={1}></lottie-player>
+        <lottie-player id="mylottie_2" src="../../animations/loader_fail.json" speed={1}></lottie-player>
       </span>
     </form>
   </div>
@@ -57,6 +58,16 @@ const { slug } = Astro.props;
     }
 
     #mylottie.active {
+      display: block;
+    }
+    #mylottie_2 {
+      scale: 6;
+      height: 10px;
+      width: 50px;
+      display: none;
+    }
+
+    #mylottie_2.active {
       display: block;
     }
     #kontakt {
@@ -217,6 +228,7 @@ const { slug } = Astro.props;
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dHJweHZud2Zzd2R3dnRjaWZoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4NDM5ODAzNywiZXhwIjoxOTk5OTc0MDM3fQ.cPfl-eeiPXtkNhII4F8D2CQ3e7QcAfZLStGrJJl1zSM";
     const supabase = createClient("https://fttrpxvnwfswdwvtcifh.supabase.co", key);
     const lottie = document.getElementById("mylottie");
+    const lottie_fail = document.getElementById("mylottie");
 
     var form = document.getElementById("my-form");
 
@@ -272,13 +284,19 @@ const { slug } = Astro.props;
               .catch((error) => {
                 // Håndterer eventuelle fejl og udskriver fejlbeskeden
                 console.error("Fejl:", error);
+                lottie_2.classList.add("active");
+                lottie_2.play();
               });
           } else {
             response.json().then((data) => {
               if (Object.hasOwn(data, "errors")) {
                 console.log("error");
+                lottie_2.classList.add("active");
+                lottie_2.play();
               } else {
                 console.log("error");
+                lottie_2.classList.add("active");
+                lottie_2.play();
               }
             });
           }
