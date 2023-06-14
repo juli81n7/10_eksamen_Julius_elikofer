@@ -1,0 +1,214 @@
+---
+import Footer from "../../components/Footer.astro";
+
+import Header from "../../components/Header.astro";
+import Knap from "../../components/Knap.astro";
+
+import "../../styles/style.css";
+
+export async function getStaticPaths() {
+  const url = "https://fttrpxvnwfswdwvtcifh.supabase.co/rest/v1/stock";
+
+  const options = {
+    headers: {
+      apikey:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dHJweHZud2Zzd2R3dnRjaWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODQzOTgwMzcsImV4cCI6MTk5OTk3NDAzN30.jiQY1R9_4xH6PJgdeCvhKQKRA6bfCLB2ciJOBVzotc4",
+    },
+  };
+
+  const respons = await fetch(url, options);
+  const data = await respons.json();
+
+  return data.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/svg/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Side hvor man kan se at man har gennemført sin ordre" />
+    <title>Cehofski - Order complete</title>
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <section class="thanks">
+        <h1>Thanks for your reservation</h1>
+        <p>Please note, that your order is confirmed once you get a confirmation mail. <br /> Response times may vary, but we will reach out to you promptly.</p>
+      </section>
+      <section>
+        <div class="item">
+          <div class="img_container">
+            <img src={"../img/" + item.img2 + ".webp"} alt="" />
+          </div>
+          <div class="main_info">
+            <div class="info">
+              {/* Betinget rendering baseret på værdien af second_name */}
+              {item.second_name ? <h3>{item.name + " " + item.second_name}</h3> : <h3>{item.name}</h3>}
+              <div class="size">
+                <p class="header">Size</p>
+                <p>{item.size}</p>
+              </div>
+
+              {
+                item.materiale && (
+                  <div class="text">
+                    <p class="header">Materials</p>
+                    <p>{item.materiale}</p>
+                  </div>
+                )
+              }
+              {
+                item.sten && (
+                  <div class="text">
+                    <p class="header">Stone</p>
+                    <p>{item.sten}</p>
+                  </div>
+                )
+              }
+              {
+                item.text && (
+                  <div class="text">
+                    <p class="header">Description</p>
+                    <p>{item.text}</p>
+                  </div>
+                )
+              }
+            </div>
+            <div class="price">
+              <h3>{item.price + " DKK"}</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .thanks {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .header {
+    font-weight: 900;
+    font-size: 1rem;
+  }
+
+  img {
+    max-height: 300px;
+  }
+  .item {
+    display: flex;
+    text-align: left;
+
+    margin-left: min(1rem);
+    margin-right: min(1rem);
+
+    overflow: hidden;
+    border: 1px solid var(--black);
+    width: fit-content;
+  }
+  .price {
+    text-align: right;
+  }
+
+  .img_container {
+    height: 100%;
+    width: 280px;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid var(--black);
+  }
+  .info {
+    margin-left: 1rem;
+    margin-top: 1rem;
+  }
+  .info p {
+    padding-right: 3rem;
+    max-width: 35ch;
+  }
+  .text {
+    justify-content: space-between;
+    padding: 0.4rem 0rem 0.4rem 0rem;
+    width: 100%;
+  }
+  .size {
+    justify-content: space-between;
+    padding: 0.4rem 0rem 0.4rem 0rem;
+    width: 100%;
+  }
+  .price {
+    align-self: end;
+    text-align: right;
+    border-bottom: 1px solid var(--black);
+    padding-bottom: 0.1rem;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+  .main_info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (max-width: 800px) {
+    .item {
+      flex-direction: column;
+      width: 100%;
+      margin: 0rem;
+      margin-bottom: 1rem;
+    }
+    .img_container {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--black);
+      display: block;
+    }
+    img {
+      object-fit: cover;
+      align-self: stretch;
+      max-height: 300px;
+      width: 100%;
+      margin: 0 !important;
+    }
+    .main_info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .price {
+      margin-bottom: 0rem;
+    }
+    .info p {
+      padding-right: 3rem;
+      max-width: 18ch;
+    }
+  }
+</style>

@@ -12,8 +12,11 @@ const { slug } = Astro.props;
       <input class="two" type="email" name="email" required placeholder="yourmail@gmail.com*" />
 
       <textarea class="all text" name="text" placeholder="Message"></textarea>
-
-      <button type="submit"> Reserve</button>
+      <span>
+        <button type="submit"> Reserve</button>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" is:inline></script>
+        <lottie-player class="active" id="mylottie" src="../animations/loader.json" speed={1}></lottie-player>
+      </span>
     </form>
   </div>
 
@@ -28,17 +31,36 @@ const { slug } = Astro.props;
       line-height: 1rem;
       background-color: var(--primarycolor);
       color: var(--secondarycolor);
+      border: 1px solid var(--primarycolor);
       border-color: transparent;
       margin-right: auto;
+      transition: 0.3s ease;
+      display: flex;
+      gap: 1rem;
     }
     button:hover {
       background-color: var(--secondarycolor);
       color: var(--primarycolor);
       border: 1px solid var(--primarycolor);
-      margin-right: auto;
+
       transition: 0.3s ease;
     }
+    span {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #mylottie {
+      scale: 6;
+      height: 10px;
+      width: 50px;
+      display: none;
+    }
 
+    #mylottie.active {
+      display: block;
+    }
     #kontakt {
       scroll-margin-top: 400px;
     }
@@ -74,7 +96,6 @@ const { slug } = Astro.props;
       width: 100%;
     }
     textarea {
-      color: var(--secondarycolor);
       font-weight: 100;
       font-size: 1rem;
       background: transparent;
@@ -129,7 +150,7 @@ const { slug } = Astro.props;
     }
 
     input {
-      border: 1px solid var(--primarycolor);
+      border: 1px solid var(--black);
       background-color: var(--secondarycolor);
     }
 
@@ -148,17 +169,20 @@ const { slug } = Astro.props;
 
       button {
         background-color: var(--primarycolor);
-        border: 1px solid var(--secondarycolor);
+        border: 1px solid var(--primarycolor);
         color: var(--secondarycolor);
-        font-family: aviano-sans, sans-serif;
+        font-family: "Perandory";
+        padding: 1rem 2.1rem 0.8rem 2.1rem;
         font-weight: 400;
-        font-size: 1rem;
+        font-size: 1.5rem;
         font-style: normal;
         height: 100%;
-        width: 100%;
+
+        display: flex;
+        justify-content: center;
         transition: 0.2s ease-in-out;
         cursor: pointer;
-        margin-top: 1rem;
+        margin: 0rem;
       }
       .kontakt {
         margin-left: 1rem;
@@ -171,13 +195,6 @@ const { slug } = Astro.props;
         margin-bottom: 2rem;
       }
 
-      button {
-        color: transparent;
-        background-color: transparent;
-        border-color: transparent;
-        padding: 0;
-        display: block;
-      }
       .container {
         width: 100%;
         margin-top: 2rem;
@@ -204,7 +221,7 @@ const { slug } = Astro.props;
 
     const form = document.querySelector("form");
     form.addEventListener("submit", sendForm);
-
+    const lottie = document.getElementById("mylottie");
     function sendForm(event) {
       event.preventDefault();
 
@@ -235,16 +252,18 @@ const { slug } = Astro.props;
           }
 
           console.log("Data blev opdateret succesfuldt i 'stock' tabel:", data);
+          lottie.classList.add("active");
+          lottie.play();
 
-          // Nulstiller formularen efter data er blevet indsendt
-          form.reset();
+          setTimeout(function () {
+            form.reset();
+            location.href = "/reservation/" + slug;
+          }, 2500);
         })
         .catch((error) => {
           // Håndterer eventuelle fejl og udskriver fejlbeskeden
           console.error("Fejl:", error);
         });
-
-      form.reset();
     }
   </script>
 </div>
