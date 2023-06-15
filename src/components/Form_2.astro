@@ -274,8 +274,8 @@ const { slug } = Astro.props;
               .then(({ data, error }) => {
                 if (error) {
                   console.log("Fejl:", error);
-                  lottie_2.classList.add("active");
-                  lottie_2.play();
+                  lottie_fail.classList.add("active");
+                  lottie_fail.play();
                 }
 
                 console.log("Data blev opdateret succesfuldt i 'stock' tabel:", data);
@@ -290,15 +290,15 @@ const { slug } = Astro.props;
               .catch((error) => {
                 // Håndterer eventuelle fejl og udskriver fejlbeskeden
                 console.error("Fejl:", error);
-                lottie_2.classList.add("active");
-                lottie_2.play();
+                lottie_fail.classList.add("active");
+                lottie_fail.play();
               });
           } else {
             response.json().then((data) => {
               if (Object.hasOwn(data, "errors")) {
                 console.log("error");
-                lottie_2.classList.add("active");
-                lottie_2.play();
+                lottie_fail.classList.add("active");
+                lottie_fail.play();
               } else {
               }
             });
