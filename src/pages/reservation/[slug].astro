@@ -45,8 +45,11 @@ const { item } = Astro.props;
     <Header />
     <main>
       <section class="thanks">
-        <h1>Thanks for your reservation</h1>
-        <p>Please note, that your order is confirmed once you get a confirmation mail. <br /> Response times may vary, but we will reach out to you promptly.</p>
+        <h1>Thanks for your <br /> reservation</h1>
+        <p class="header">
+          You'll get an email with information on how to pay and how to get the piece. <br />
+          I look forward to getting in touch and hope that you are looking forward to getting your new Cehofski piece
+        </p>
       </section>
       <section>
         <div class="item">
@@ -92,6 +95,7 @@ const { item } = Astro.props;
             </div>
           </div>
         </div>
+        <p class="note">Please note, that your order is confirmed once you get a confirmation mail. <br /> Response times may vary, but we will reach out to you promptly.</p>
       </section>
     </main>
     <Footer />
@@ -108,14 +112,24 @@ const { item } = Astro.props;
     overflow: hidden;
     margin-left: 1rem;
     margin-right: 1rem;
+    margin-bottom: 5rem;
   }
   .thanks {
     text-align: center;
     margin-bottom: 2rem;
   }
+  .thanks .header {
+    font-weight: 400;
+    font-size: 1.1rem;
+  }
   .header {
     font-weight: 900;
     font-size: 1rem;
+  }
+  .note {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.8rem;
   }
 
   img {
@@ -134,6 +148,12 @@ const { item } = Astro.props;
   }
   .price {
     text-align: right;
+  }
+  h3 {
+    font-size: 2rem;
+  }
+  h1 {
+    line-height: 7rem;
   }
 
   .img_container {
