@@ -220,8 +220,11 @@ const { slug } = Astro.props;
     }
   </style>
 
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
+    // importere supabase Create client, fra supabase client javascript for at gøre det nemmere at interagere med flere Tabeller i samme funktion.
+
+    import { createClient } from "@supabase/supabase-js";
+
     // Opretter en klient til Supabase med den angivne nøgle og URL
     const key =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dHJweHZud2Zzd2R3dnRjaWZoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4NDM5ODAzNywiZXhwIjoxOTk5OTc0MDM3fQ.cPfl-eeiPXtkNhII4F8D2CQ3e7QcAfZLStGrJJl1zSM";
