@@ -1,0 +1,70 @@
+---
+import Testimonial from "../components/Testimonial.astro";
+
+const url = "https://zebrxpetpwqpvbydvvww.supabase.co/rest/v1/testimonials?approved=is.true";
+const key =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplYnJ4cGV0cHdxcHZieWR2dnd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk4NDQsImV4cCI6MjAwMjMyNTg0NH0.3GfG1lNh_-z7IeeeviwwVNbThKF94g9eoA9xzhwUgXs";
+
+const respons = await fetch(url, {
+    method: "GET",
+    headers: {
+        apikey: key,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+    },
+});
+const data = await respons.json();
+console.log(data);
+---
+
+<div class="container">
+    <h2>Words from our customers</h2>
+    <div>
+        <section>
+            {
+                data.map((testimonials) => {
+                    return <Testimonial name={testimonials.name} overskrift={testimonials.overskrift} text={testimonials.text} />;
+                })
+            }
+        </section>
+    </div>
+    <p class="bottext">Please fill out the form further along the page, to let us know about your experience with Cehofski!</p>
+</div>
+
+<style>
+    section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-top: 2rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    .container {
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        gap: 1rem;
+        margin-bottom: 4rem;
+        margin-top: 2rem;
+    }
+    h2 {
+        text-align: center;
+        color: var(--primarycolor);
+        line-height: 1;
+    }
+    .bottext {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    @media (max-width: 800px) {
+        section {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

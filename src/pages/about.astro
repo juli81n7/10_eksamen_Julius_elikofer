@@ -7,6 +7,24 @@ import Form from "../components/Form.astro";
 import Horisontal from "../components/Horisontal.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import FormTesti from "../components/FormTesti.astro";
+import Testimonial from "../components/Testimonial.astro";
+import Testimonialsection from "../components/Testimonialsection.astro";
+
+const url = "https://zebrxpetpwqpvbydvvww.supabase.co/rest/v1/testimonials";
+const key =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplYnJ4cGV0cHdxcHZieWR2dnd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk4NDQsImV4cCI6MjAwMjMyNTg0NH0.3GfG1lNh_-z7IeeeviwwVNbThKF94g9eoA9xzhwUgXs";
+
+const respons = await fetch(url, {
+  method: "GET",
+  headers: {
+    apikey: key,
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
+const data = await respons.json();
+console.log(data);
 ---
 
 <html lang="en">
@@ -31,7 +49,8 @@ import Footer from "../components/Footer.astro";
               <h1>The world of cehofski</h1>
               <p>
                 Welcome to the world of Cehofski jewelry. <br />
-                <br /> Cehofski startet in 2021 as a side project, but has now evolved into the univers you experience today.<br /><br />Scroll along the page to learn more about Cehofski.
+                <br /> Cehofski startet in 2021 as a side project, but has now evolved into the univers you experience today.<br /><br />On this page page you can learn more about the story of the
+                brand, and the person behind it. Scroll along the page to learn more about Cehofski.
               </p>
 
               <div class="vid_container">
@@ -47,7 +66,10 @@ import Footer from "../components/Footer.astro";
           <div class="content louise blue" id="second">
             <div class="grid_1_1_1_1">
               <h2>Louise Cehofski</h2>
-              <p>My name is Louise Cehofski, I’m a 27-year-old jewelrydesign student based in Copenhagen. over the past four years, I have dedicated myself to refining my jewelry design skills and creating a universe of jewlery artwear.</p>
+              <p>
+                My name is Louise Cehofski, I’m a 27-year-old jewelrydesign student based in Copenhagen. over the past four years, I have dedicated myself to refining my jewelry design skills and
+                creating a universe of jewlery artwear.
+              </p>
               <div class="img_container grid1">
                 <img src="/img/about_louise_2.webp" alt="Billede af Louise Cehofski" />
               </div>
@@ -55,7 +77,10 @@ import Footer from "../components/Footer.astro";
               <div class="img_container grid2">
                 <img src="/img/about_louise_1.webp" alt="Billede af Louise Cehofski" />
               </div>
-              <p class="texttwo">While I have previously dabbled in conceptual photography, I always felt something was missing, until I discovered the world of jewelry crafts. Since then, I have been completely captivated by the artform and have never looked back.</p>
+              <p class="texttwo">
+                While I have previously dabbled in conceptual photography, I always felt something was missing, until I discovered the world of jewelry crafts. Since then, I have been completely
+                captivated by the artform and have never looked back.
+              </p>
             </div>
             <a href="#third" class="right">
               <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" is:inline></script>
@@ -102,7 +127,26 @@ import Footer from "../components/Footer.astro";
               <lottie-player id="mylottie" src="../../animations/white_arrow.json" autoplay loop></lottie-player>
             </a>
           </div>
-          <div class="content return" id="fifth">
+          <div class="content testimonial" id="fifth">
+            <div class="grid">
+              <Testimonialsection />
+            </div>
+            <a href="#sixth" class="right">
+              <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" is:inline></script>
+              <lottie-player id="mylottie" src="../../animations/blue_arrow.json" autoplay loop></lottie-player>
+            </a>
+          </div>
+          <div class="content blue" id="sixth">
+            <div class="grid">
+              <FormTesti />
+            </div>
+            <a href="#seventh" class="right">
+              <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" is:inline></script>
+              <lottie-player id="mylottie" src="../../animations/white_arrow.json" autoplay loop></lottie-player>
+            </a>
+          </div>
+
+          <div class="content return" id="seventh">
             <a href="/">
               <h2>home</h2>
             </a>
@@ -188,6 +232,12 @@ import Footer from "../components/Footer.astro";
     scroll-margin-right: 5rem;
   }
   #fifth {
+    scroll-margin-right: 5rem;
+  }
+  #sixth {
+    scroll-margin-right: 5rem;
+  }
+  #seventh {
     scroll-margin-right: 5rem;
     width: calc(100vw);
     margin-left: 5rem;

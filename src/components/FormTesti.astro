@@ -1,0 +1,149 @@
+---
+---
+
+<section>
+    <h2>Tell us about your experience with Cehofski</h2>
+    <form>
+        <input class="top1" type="text" name="name" required placeholder="Name*" />
+        <input class="top2" type="text" name="email" required placeholder="mail@mail.com*" />
+        <input class="all" type="text" name="overskrift" required placeholder="Headline*" />
+        <input class="all" type="text" name="text" required placeholder="Text*" />
+
+        <button>Send</button>
+    </form>
+</section>
+<style>
+    section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    h2 {
+        text-align: left;
+        margin-bottom: 4rem;
+        color: var(--secondarycolor);
+        font-size: 4rem;
+        line-height: 1;
+    }
+    input {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.2rem;
+        border: 0.1px solid black;
+        padding: 0.5rem 1rem 0.5rem 1rem;
+        color: black;
+    }
+    input::placeholder {
+        color: black;
+        opacity: 0.7; /* Firefox */
+    }
+    form {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 5fr;
+        gap: 0.5rem;
+        overflow: hidden;
+        position: relative;
+    }
+    .top1 {
+        grid-column: 1 / 3;
+    }
+    .top2 {
+        grid-column: 3 / 5;
+    }
+    .all {
+        grid-column: span 4;
+    }
+    .tekst {
+        text-align: start;
+    }
+
+    button {
+        margin-right: 1rem;
+        background-color: var(--primarycolor);
+        border: 1px solid var(--secondarycolor);
+        color: var(--secondarycolor);
+        width: max-content;
+        transition: 0.2s ease-in-out;
+        padding: 0.7rem 2.1rem 0.5rem 2.1rem;
+        font-family: "Perandory";
+        font-size: 1.5rem;
+        font-weight: 100;
+        text-decoration: none;
+        cursor: pointer;
+        line-height: 1rem;
+    }
+
+    button:hover {
+        color: var(--primarycolor);
+        background-color: var(--secondarycolor);
+        border-color: var(--primarycolor);
+        transition: 0.2s ease-in-out;
+    }
+    @media (max-width: 800px) {
+        section {
+            margin-left: 1rem;
+            margin-right: 1rem;
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+
+            gap: 1rem;
+            width: 100%;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+        textarea {
+            min-height: 200px;
+        }
+        button {
+            background-color: var(--primarycolor);
+            border: 1px solid var(--secondarycolor);
+            color: var(--secondarycolor);
+            font-family: "Perandory";
+            font-weight: 400;
+            font-size: 2rem;
+            font-style: normal;
+            height: 100%;
+            width: 100%;
+            transition: 0.2s ease-in-out;
+            cursor: pointer;
+            padding: 0.7rem 2.1rem 0.5rem 2.1rem;
+        }
+    }
+</style>
+
+<script>
+    const url = "https://zebrxpetpwqpvbydvvww.supabase.co/rest/v1/testimonials";
+    const key =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplYnJ4cGV0cHdxcHZieWR2dnd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk4NDQsImV4cCI6MjAwMjMyNTg0NH0.3GfG1lNh_-z7IeeeviwwVNbThKF94g9eoA9xzhwUgXs";
+
+    const form = document.querySelector("form");
+    form.addEventListener("submit", sendForm);
+
+    function sendForm(event) {
+        event.preventDefault();
+        const formData = form.elements;
+        let name = formData.name.value + " ";
+        let overskrift = formData.overskrift.value;
+        let text = formData.text.value;
+
+        console.log(formData);
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                apikey: key,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, text, overskrift }),
+        });
+    }
+</script>
